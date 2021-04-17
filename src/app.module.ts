@@ -7,6 +7,7 @@ import { FarmUnitEntity } from './entities/farm.unit.entity';
 import { FarmModule } from './farm/farm.module';
 import { FarmUnitModule } from './farm-unit/farm-unit.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     ScheduleModule.forRoot(),
     FarmModule,
     FarmUnitModule,
+    TaskModule,
   ],
 })
 export class AppModule {}
