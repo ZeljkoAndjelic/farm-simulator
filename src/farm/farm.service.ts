@@ -62,12 +62,12 @@ export class FarmService {
     await farmUnit.save();
   }
 
-  public async create(data: BuildingDto): Promise<any | FarmUnitEntity> {
+  public async create(data: BuildingDto): Promise<FarmUnitEntity> {
     const res = await this.transact(data);
     return res;
   }
 
-  public async getAllBuildings() {
+  public async getAllBuildings(): Promise<BuildingEntity[]> {
     try {
       const qb = this.buildingRepository.createQueryBuilder('building');
 
@@ -80,7 +80,7 @@ export class FarmService {
     }
   }
 
-  getAllFarmUnits(id: string) {
+  getAllFarmUnits(id: string): Promise<BuildingEntity[]> {
     try {
       const qb = this.buildingRepository.createQueryBuilder('building');
 

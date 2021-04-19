@@ -5,7 +5,7 @@ import { BuildingEntity } from 'src/entities/building.entity';
 import { FarmUnitEntity } from 'src/entities/farm.unit.entity';
 import { Repository } from 'typeorm';
 import * as _ from 'lodash';
-import { differenceInSeconds, subSeconds } from 'date-fns';
+import { differenceInSeconds } from 'date-fns';
 
 @Injectable()
 export class FarmUnitService {
@@ -16,14 +16,18 @@ export class FarmUnitService {
     private readonly buildingRepository: Repository<BuildingEntity>,
   ) {}
 
-  public async addFarmUnit(data: FarmUnitDto) {
+  public async addFarmUnit(data: FarmUnitDto): Promise<FarmUnitEntity> {
     const { buildingId, farmUnitName } = data;
     try {
       const bld = await this.buildingRepository.findOne({
         where: { id: buildingId },
       });
 
-      if (!bld) throw new Error('No farm building found');
+      if (!bld)
+        throw new HttpException(
+          'Farm building not found',
+          HttpStatus.NOT_FOUND,
+        );
 
       const farmUnit = this.farmUnitRepository.create();
       farmUnit.name = farmUnitName;
@@ -38,7 +42,7 @@ export class FarmUnitService {
     }
   }
 
-  public async feedFarmUnit(data: { id: string }) {
+  public async feedFarmUnit(data: { id: string }): Promise<FarmUnitEntity> {
     try {
       const frmu = await this.farmUnitRepository.findOne({
         where: { id: data.id },
